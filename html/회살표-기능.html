@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <p>날짜 및 시간 : {{ date }}</p>
+    <input type="button" value="클릭" v-on:click="onclick" />
+</div>
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+    const vm = Vue.createApp ( {
+        data() {
+            return {
+                date: new Date().toLocaleString()
+            }
+        },
+        methods: {
+            onclick() {
+                console.log('onclick:' + this.date)
+            }
+        },
+        created() {
+            console.log('생성된 훅:' + this.date)
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

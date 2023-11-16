@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <img v-bind:src="image" alt=""/>
+    <img :src="image" alt=""/>
+    <input type="button" value="input" :disabled="flag" alt=""/>
+    <input type="text" value="text" :required="required" :size="size" alt=""/>
+    <input type="text" value="text" v-bind:="{required: required, size:size}" alt=""/>
+</div>
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+    const vm = Vue.createApp ( {
+        data(){
+            return {
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1uZbpBXrGvaPCOQGoDdSVJiX-5f4UA-t9QGlmk-0pZpBBN9Uy',
+                flag : true,
+                required: true,
+                size: 70
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

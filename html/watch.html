@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <p>
+        질문 (yes/no)
+        <input v-model="question"/>
+    </p>
+    <p>{{ answer }}</p>
+</div>
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+    const vm = Vue.createApp ( {
+        data() {
+            return {
+                question: '',
+                answer: '질문 뒤에 물음표 (반각)를 입력하면 답변합니다.'
+            }
+        },
+        // watch: {
+        //     question (newQuestion, oldQuestion) {
+        //         if(newQuestion.indexOf('?') > -1) {
+        //             this.getAnswer();
+        //         }
+        //     }
+        //
+        //     question : {
+        //         handler (newQuestion, oldQuestion) {
+        //             if(newQuestion.indexOf('?') > -1) {
+        //                 this.getAnswer();
+        //             }
+        //         }
+        //     }
+        // },
+        created() {
+          this.$watch('question', (newQuestion, oldQuestion) => {
+              if(newQuestion.indexOf('?') > -1) {
+                  this.getAnswer();
+              }
+          })
+
+        },
+        methods: {
+            getAnswer() {
+                this.answer = '생각중'
+                fetch('https://yesno.wtf/api')
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        this.answer = data.answer
+                    })
+                    .catch(error => {
+                        this.answer = 'Error! Could not reach the API. ' + error
+                    });
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>
