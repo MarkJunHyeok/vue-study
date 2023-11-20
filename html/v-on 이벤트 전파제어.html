@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <div id="parent" v-on:click="parentClick" :style="[parentStyle, center]">
+        parent
+        <div id="foo" v-on:click.stop.self="fooClick" :style="[fooStyle,center]">
+            foo
+            <div id="child" v-on:click="childClick" :style="[childStyle, center]">
+                child
+            </div>
+        </div>
+    </div>
+</div>
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+    const vm = Vue.createApp({
+        data() {
+            return {
+                //スタイル
+                parentStyle: {
+                    backgroundColor: 'aquamarine',
+                    width: '200px',
+                    height: '200px'
+                },
+                fooStyle: {
+                    backgroundColor: 'lightseagreen',
+                    width: '140px',
+                    height: '140px'
+                },
+                childStyle: {
+                    backgroundColor: 'lightgreen',
+                    width: '80px',
+                    height: '80px'
+                },
+                center: {
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginRight: '-50%',
+                    transform: 'translate(-50%, -50%)'
+                }
+            }
+        },
+        methods: {
+            parentClick(e) {
+                console.log('parent listener : 発生元 = ' + e.target.id);
+            },
+            fooClick(e) {
+                console.log('foo listener : 発生元 = ' + e.target.id);
+            },
+            childClick(e) {
+                console.log('child listener : 発生元 = ' + e.target.id);
+            }
+        }
+    }).mount('#app');
+
+</script>
+</body>
+</html>

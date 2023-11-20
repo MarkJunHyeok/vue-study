@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <input v-model.lazy="name">
+    <p>안녕하세요 {{name}} 님</p>
+    <br>
+
+    <input v-model.number="age" type="text" v-on:input="onchange" />
+    <p>{{age}}</p>
+    <br>
+
+    <input v-model.trim="message" type="text" />
+    <p>{{message}}</p>
+
+</div>
+<script type="module">
+    const vm = Vue.createApp ( {
+        data() {
+            return {
+                name: '',
+                age: 0,
+                message: ''
+            }
+        },
+        methods: {
+            onchange(){
+                console.log(typeof this.age === 'number')
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

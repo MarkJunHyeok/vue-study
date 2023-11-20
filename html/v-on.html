@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    {{ now }}
+    <button v-on:click="dateTime"> 뷰 클릭 </button>
+    <button @click="dateTime()"> 자바스크립트 클릭 </button>
+    <button @click="this.now = new Date()">안좋은 클릭</button>
+    <br/>
+
+    <img style="width: 200px; height: 200px" v-bind:src="path" alt="" v-on:mouseenter="onmouseenter" v-on:mouseleave="onmouseleave" />
+    <br>
+
+    <button v-on:click="greeting('안녕하세요!')">인사</button>
+    {{message}}
+
+    <br/>
+
+    <button @click = "greeting('Hello Vue!'), dateTime()" >다중 클릭 </button>
+
+    <br/>
+
+    <button @click="onclick">클릭</button>
+
+    <br>
+
+    <div id="foo" @click="showInfo" :style="{width: '200px', height: '200px', backgroundColor: 'yellow'}"></div>
+    <p>type:{{ type }}</p>
+    <p>target: {{ target }}</p>
+    <p>clientX :{{ clientX }}</p>
+    <p>clientY :{{ clientY }}</p>
+
+    <br>
+
+    <button v-on:click="eventSet('후하하', $event)">클릭</button>
+    {{eventMessage}}
+
+    <br>
+    <button v-on:click.once="onceClick">클릭</button>
+    {{onceClickMessage}}
+
+    <br>
+    <div v-on:contextmenu.prevent v-bind:style="{ backgroundColor: 'green', width: '200px', height: '200px'}"></div>
+
+    <br>
+    <form v-on:submit="onsubmit">
+        <label for="email">Email:</label>
+        <input id="email" type="email" v-model="email">
+        <input type="submit" value="Send">
+    </form>
+    <p v-text="emailMessage"></p>
+</div>
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+    const vm = Vue.createApp ( {
+        data(){
+            return {
+                now: new Date(),
+                path: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVIhID5bbFc_3Eq-gF0Do8tYZrE3nWroUetdhcGoGa2PAMTHl0L01T9RjvdtsxccnWRbI&usqp=CAU',
+                message: '',
+                type: '',
+                target: '',
+                clientX: '',
+                clientY: '',
+                eventMessage: '',
+                onceClickMessage: '',
+                email: '',
+                emailMessage: ''
+            }
+        },
+        methods: {
+            dateTime() {
+                this.now = new Date()
+            },
+            onmouseenter() {
+                this.path = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi7_AiFiSJuGvq7J8y82FOVASAqlTHfAqPHmEzcM0BBYgdzS1-aUqkV6CCC9ysIhuU8wg&usqp=CAU'
+            },
+            onmouseleave() {
+                this.path = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVIhID5bbFc_3Eq-gF0Do8tYZrE3nWroUetdhcGoGa2PAMTHl0L01T9RjvdtsxccnWRbI&usqp=CAU'
+            },
+            greeting(message) {
+                this.message = message
+            },
+            onclick(e) {
+                console.log(e)
+            },
+            showInfo(e) {
+                this.type = e.type;  //この場合は click
+                this.target = e.target.id;  //この場合は foo
+                this.clientX = e.clientX;  //クリックされたブラウザ上のX座標
+                this.clientY = e.clientY;  //クリックされたブラウザ上のY座標
+            },
+            eventSet(msg, e){
+                this.eventMessage = msg + '! 이벤트 유형' + e.type
+            },
+            onceClick(){
+                this.onceClickMessage = Math.round(Math.random() * 10)
+            },
+            onsubmit(e) {
+                if (this.email === '') {
+                    e.preventDefault()
+                    this.emailMessage = '이메일을 입력하세요'
+                }
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

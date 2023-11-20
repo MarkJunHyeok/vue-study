@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <input type="checkbox" v-model="show" >
+    <div v-if="show">
+        안녕하세요
+    </div>
+    <div v-else>
+        안녕히가세요
+    </div>
+    <br>
+
+    <button v-on:click="random">클릭</button>
+    <div v-if="rand >= 0 && rand < 0.5">
+        rand 값이 0.5 미만인 경우 표시되는 블록
+    </div>
+    <div v-else-if="rand >= 0.5 && rand < 0.8">
+        rand 값이 0.6 이상 0.8 미만인 경우 표시되는 블록
+    </div>
+    <div v-else>
+        rand 값이 0.8 이상일 때 표시되는 블록
+    </div>
+    <p> {{rand}}</p>
+    <br>
+
+    <template v-if="show">
+        <h1>하나</h1>
+    </template>
+    <template v-else>
+        <h1>둘</h1>
+    </template>
+    <br>
+
+    <label for="check"></label>
+    <input type="checkbox" id="check" v-model="show">
+    <div v-show="show">
+        체크하면 표시됨
+    </div>
+</div>
+<script type="module">
+    const vm = Vue.createApp ( {
+        data(){
+            return {
+                show: false,
+                rand: 0.6
+            }
+        },
+        methods: {
+            random() {
+                this.rand = Math.random()
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

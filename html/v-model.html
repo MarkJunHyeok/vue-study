@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <select v-model="selected">
+        <option value="height">height</option>
+        <option value="width">width</option>
+    </select>
+    <input type="text" size="5" v-model="inputValue"/>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1uZbpBXrGvaPCOQGoDdSVJiX-5f4UA-t9QGlmk-0pZpBBN9Uy" alt="" v-bind:[selected]="inputValue"/>
+
+    <p v-bind:style="{ color: textColor, backgroundColor: bgColor, fontSize: fontSize}">안녕하세요</p>
+    <p v-bind:style="styleSet">뷰입니다.</p>
+    <p v-bind:style="[colorStyle, fontStyle]">여러개의 스타일</p>
+    <p v-bind:class="{active: isActive, 'text-danger': hasError}">클래스</p>
+    <p v-bind:class="classSet">클래스 set</p>
+    <p v-bind:class="getClassSet">계산 속성 class</p>
+</div>
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+    const vm = Vue.createApp ( {
+        data(){
+            return {
+                selected: 'width',
+                inputValue: 100,
+                textColor: '#fff',
+                bgColor: 'green',
+                fontSize: '60px',
+                styleSet: {
+                    textColor: '#fff',
+                    backgroundColor: 'blue',
+                    fontSize: '30px'
+                },
+                colorStyle:{
+                    textColor: 'white',
+                    backgroundColor: 'red',
+                },
+                fontStyle: {
+                    fontSize: '35px'
+                },
+                isActive: true,
+                hasError: true,
+                classSet: {
+                    active: true,
+                    'text-danger': true
+                }
+            }
+        },
+        computed : {
+            getClassSet() {
+                return {
+                    active: this.isActive && !this.hasError,
+                    'text-danger': this.hasError
+                }
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>
