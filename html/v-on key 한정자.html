@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <label for="name">이름</label>
+    <input type="text" id="name" v-on:keyup.esc="remove" v-model="name">
+    <br>
+    <input type="text" id="name" v-on:keyup.shift.h.exact="help" v-on:change="clearMsg">
+    <p v-text="message"></p>
+    <br>
+
+    <div id="foo" @click.left="hide" @click.right.prevent="showMenu">
+        메뉴
+    </div>
+    <div :style="contenxtStyle" v-show="show">
+        <ul>
+            <li><a href="">Help</a></li>
+            <li><a href="">FAQ</a></li>
+            <li><a href="">Contact</a></li>
+        </ul>
+    </div>
+</div>
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+    const vm = Vue.createApp ( {
+        data() {
+            return {
+                name: '',
+                message: '',
+                contextStyle: {
+                    left: 0,
+                    right: 0
+                },
+                show: false
+            }
+        },
+        methods: {
+            remove() {
+                this.name = ''
+            },
+            help() {
+                this.message = '이름을 입력하세요'
+            },
+            clearMsg() {
+                this.message = ''
+            },
+            hide() {
+                this.show = false
+            },
+            showMenu(e) {
+                this.contextStyle ={
+                    left: e.pageX+'px',
+                    top: e.pageY+'px',
+                    position: 'absolute',
+                    backgroundColor: '#ccc'
+                }
+                this.show = true
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

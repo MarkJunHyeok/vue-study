@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <input type="checkbox" v-model="show" >
+    <div v-if="show">
+        안녕하세요
+    </div>
+    <div v-else>
+        안녕히가세요
+    </div>
+    <br>
+
+    <button v-on:click="onclikc">클릭</button>
+    <div v-if="rand"
+</div>
+<script type="module">
+    const vm = Vue.createApp ( {
+        data(){
+            return {
+                show: false
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <input v-model="name" />
+    <p>안녕하세요 {{name}} 님</p>
+    <br>
+
+    <label for="agree"> 동의함 </label>
+    <input type="checkbox" id="agree" v-model="agree">
+    <br>
+
+<!--    <label for="color">색상</label>-->
+<!--    <select id="color" v-model="color">-->
+<!--        <option disabled value="">선택 해주세요</option>-->
+<!--        <option>빨간색</option>-->
+<!--        <option>파랑색</option>-->
+<!--        <option>녹색</option>-->
+<!--    </select>-->
+<!--    <p>{{color}}</p>-->
+<!--    <br>-->
+
+    <label for="color">색상</label>
+    <select id="color" v-model="color">
+        <option v-for="option in options" v-bind:="{value: option.value, disable: option.disabled}">
+            {{option.text}}
+        </option>
+    </select>
+    <p>{{color}}</p>
+    <br>
+
+    <div ID = "앱" >
+        <label for = "wine" > 와인 </label>
+        <input type="radio" id = "wine" v-model = "drink" v-bind:value = "{en:'Wine',kr:'와인'}" >
+        <label for="beer" > 맥주 </label>
+        <input type="radio" id = "beer" v-model = "drink" v-bind:value = "{en:'Beer',kr:'맥주'}" >
+        <label for = "sake" > 사케 </label>
+        <input type="radio" id = "sake" v-model = "drink" v-bind:value = "{en:'Sake',kr:'사케'}" >
+        <p> {{ drink.en + ':' + drink.kr }} </p>
+    </div>
+</div>
+<script type="module">
+    const vm = Vue.createApp ( {
+        data() {
+            return {
+                name: '박준혁',
+                agree: false,
+                color: '',
+                options: [
+                    {text: '선택하세요', value: '', disabled: true},
+                    {text: '빨간색', value: 'red'},
+                    {text: '파란색', value: 'blue'},
+                    {text: '초록색', value: 'green'}
+                ],
+                drink: {
+                    en: '', kr: ''
+                }
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

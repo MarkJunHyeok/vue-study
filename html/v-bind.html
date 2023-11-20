@@ -14,6 +14,7 @@
     <input type="button" value="input" :disabled="flag" alt=""/>
     <input type="text" value="text" :required="required" :size="size" alt=""/>
     <input type="text" value="text" v-bind:="{required: required, size:size}" alt=""/>
+    <input type="text"  v-bind:="bindSet" alt=""/>
 </div>
 <!-- script タグの type 属性に module を指定 -->
 <script type="module">
@@ -24,7 +25,12 @@
                 image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1uZbpBXrGvaPCOQGoDdSVJiX-5f4UA-t9QGlmk-0pZpBBN9Uy',
                 flag : true,
                 required: true,
-                size: 70
+                size: 70,
+                bindSet: {
+                    placeholder : '박준혁',
+                    required : true,
+                    size:50
+                }
             }
         }
     }).mount('#app')
