@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <custom-input v-model = "myText" ></custom-input>
+    <p> {{ myText }} </p>
+    <custom-input-two v-model = "myText" ></custom-input-two>
+</div>
+<script type="module">
+    const app = Vue.createApp ( {
+        data() {
+            return {
+                myText: ''
+            };
+        }
+    })
+
+    app.component('custom-input', {
+        props: ['modelValue'],
+        emits: ['update:modelValue'],
+        template: '<input v-bind:value="modelValue" v-on:input="$emit(`update:modelValue`, $event.target.value)">'
+    })
+
+    app.component('custom-input-two', {
+        props: ['modelValue'],
+        emits: ['update:modelValue'],
+        template: '<input v-model="myValue">',
+        computed: {
+            myValue: {
+                get() {
+                    return this.modelValue
+                },
+                set(value) {
+                    this.$emit('update:modelValue', value)
+                }
+            }
+        }
+    })
+
+    app.mount('#app')
+</script>
+</body>
+</html>

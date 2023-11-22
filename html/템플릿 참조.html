@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <foo-div></foo-div>
+    <sample-div></sample-div>
+</div>
+<script type="module">
+    const app = Vue.createApp ( {})
+
+    app.component('foo-div', {
+        data() {
+            return{
+                name : 'Vue'
+            }
+        },
+        mounted() {
+            this.$refs.input.focus()
+        },
+        template: `
+          <div ref="foo">Foo 입니다.</div>
+          <input ref="input">
+        `
+    })
+
+    app.component('sample-div', {
+        template: `
+            <div ref="target">{{message}}</div>
+            <button type="button" v-on:click="changeColor">색상 변경</button>
+        `,
+        data() {
+            return {
+                message: 'hello'
+            }
+        },
+        methods: {
+            changeColor() {
+                this.$refs.target.style.setProperty('color', 'red')
+            }
+        }
+    })
+
+    app.mount('#app')
+</script>
+</body>
+</html>

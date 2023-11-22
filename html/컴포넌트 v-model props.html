@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <custom-input v-model:text="myText" ></custom-input>
+    <p> {{ myText }} </p>
+    <br>
+
+    <p>이름 : {{name}}</p>
+    <p>성 : {{lastName}}</p>
+    <custom-name
+        v-model:name="name"
+        v-model:last-name="lastName"
+    />
+
+
+
+</div>
+<script type="module">
+    const app = Vue.createApp ( {
+        data() {
+            return {
+                myText: '',
+                name: 'jun',
+                lastName: 'park'
+            };
+        }
+    })
+
+    app.component('custom-input', {
+        props: ['text'],
+        emits: ['update:text'],
+        template: '<input v-bind:value="text" v-on:input="$emit(`update:text`, $event.target.value)">'
+    })
+
+    app.component('custom-name', {
+        props: {
+            name: String,
+            lastName: String
+        },
+        emits: ['update:name', 'update:lastName'],
+        template: `
+          <input
+            type="text"
+            :value="name"
+            @input="$emit('update:name', $event.target.value)"
+          >
+
+          <input
+            type="text"
+            :value="lastName"
+            @input="$emit('update:lastName', $event.target.value)"
+          >
+        `
+    })
+
+
+    app.mount('#app')
+</script>
+</body>
+</html>

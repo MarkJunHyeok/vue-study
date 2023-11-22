@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <p>개수 : {{count}}</p>
+    <count-button v-bind:amount="1" v-on:click-count="onclick"></count-button>
+    <count-button v-bind:amount="-1" v-on:click-count="onclick"></count-button>
+    <br>
+    <count-button v-bind:amount="1" v-on:click-count="count += $event"></count-button>
+    <count-button v-bind:amount="-1" v-on:click-count="count += $event"></count-button>
+</div>
+<script type="module">
+    const app = Vue.createApp ( {
+        data() {
+            return {
+                count: 0
+            }
+        },
+        methods: {
+            onclick(value) {
+                this.count += value
+            }
+        }
+    })
+
+    app.component('count-button', {
+        props: {
+            amount: {
+                type: Number,
+                default: 1
+            }
+        },
+        emits: {
+            clickCount: (amount) => {
+                if(amount && Number.isInteger(amount)) {
+                    return true
+                } else {
+                    console.error('clickCount는 정수여야 합니다.')
+                    return false
+                }
+            }
+        },
+        template: '<button type="button" v-on:click="onclick">{{amount}}</button>',
+        methods: {
+            onclick() {
+                this.$emit('clickCount', this.amount)
+            }
+        }
+    })
+
+    app.mount('#app')
+</script>
+</body>
+</html>

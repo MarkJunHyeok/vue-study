@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <li v-for="fruit in fruits">
+        {{fruit}}
+    </li>
+    <br>
+
+    <table>
+        <tr>
+            <th>이름</th>
+            <th>전화번호</th>
+            <th>이메일</th>
+        </tr>
+        <tr v-for="(user, index) of users">
+            <td> {{user.name}}</td>
+            <td> {{user.phone}}</td>
+            <td> {{user.email}}</td>
+            <td> {{index}}</td>
+        </tr>
+
+        <tr v-for="{name, phone, email} of users">
+            <td> {{name}}</td>
+            <td> {{phone}}</td>
+            <td> {{email}}</td>
+        </tr>
+
+        <tr v-for="(value, key, index) in guitar">
+            <td> {{index}} {{key}} : {{value}}</td>
+        </tr>
+    </table>
+    <br>
+
+    <li v-for="map in myMap">
+        {{map}}
+    </li>
+    <br>
+    <li v-for="[key, value] in myMap">
+        {{key}} : {{value}}
+    </li>
+    <br>
+    <li v-for="(map, index) in myMap">
+        {{index}} : {{map[0]}} : {{map[1]}}
+    </li>
+    <br>
+    <li v-for="([key, value], index) in myMap">
+        {{index}} : {{key}} : {{value}}
+    </li>
+    <br>
+
+    <span v-for="n in 5">
+        {{n* 10 + ' '}}
+    </span>
+    <br>
+
+    <template v-for="guitar in guitars">
+        <h2>{{guitar.brand}}</h2>
+        <p>{{guitar.amount}}</p>
+    </template>
+    <br>
+
+    <input type="button" value="change" @click="onclick">
+    <ul>
+        <li v-for="userName in userNames">
+            {{userName}}
+        </li>
+    </ul>
+    <br>
+
+    <input type="button" value="change" @click="changeUsers">
+    <ul>
+        <li v-for="user in users">
+            {{user}}
+        </li>
+    </ul>
+    <br>
+
+    <input type="button" value="change" @click="changeUsersName">
+    <ul>
+        <li v-for="user in users">
+            {{user.name}}
+        </li>
+    </ul>
+    <br>
+
+    <ul>
+        <li v-for="user in getHiUser">
+            {{user.name}}
+        </li>
+    </ul>
+    <br>
+</div>
+<script type="module">
+    const vm = Vue.createApp ( {
+        data() {
+            return {
+                fruits: ['사과', '배', '귤'],
+                users: [
+                    {
+                        name: '준',
+                        phone: '010-1234-5544',
+                        email: 'email.com'
+                    },
+                    {
+                        name: '2준',
+                        phone: '010-3233-5544',
+                        email: 'email.com'
+                    },
+                    {
+                        name: '3준',
+                        phone: '010-5123-5544',
+                        email: 'email.com'
+                    }
+                ],
+                guitar: {
+                    brand : '팬더',
+                    amount: 10000
+                },
+                guitars: [
+                    {
+                        brand : '팬더',
+                        amount: 10000
+                    },
+                    {
+                        brand : '깁슨',
+                        amount: 50000
+                    }
+                ],
+                myMap: new Map([
+                    ['NY', '뉴욕'],
+                    ['SF', '샌프란시스코'],
+                    ['LA', '로스엔젤레스']
+                ]),
+                userNames: ['준','혁']
+            }
+        },
+        methods: {
+            onclick() {
+                this.userNames[0] = '111jun'
+            },
+            changeUsers() {
+                this.users.splice(0, 1, {name:'준혁', phone:'010101', email:'email'})
+            },
+            changeUsersName() {
+                this.users = this.users.concat({name: '하이', phone: '0101010101', email : 'emailem'})
+            }
+        },
+        computed: {
+            getHiUser() {
+                return this.users.filter(user => user.name === '하이')
+            }
+        }
+    }).mount('#app')
+
+</script>
+</body>
+</html>

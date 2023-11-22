@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <hello-div v-bind:title="title"></hello-div>
+    <board-div v-for="board in boards" v-bind:key="board.id" v-bind:title="board.title" v-bind:author="board.author"></board-div>
+    <default-div></default-div>
+    <default-div v-bind:count="3"></default-div>
+</div>
+<script type="module">
+    const app = Vue.createApp ( {
+        data() {
+            return {
+                title: '제목이여',
+                boards: [
+                    {
+                        id: 1,
+                        title: '제목',
+                        author: '나'
+                    },
+                    {
+                        id: 2,
+                        title: '도서',
+                        author: '너'
+                    },                    {
+                        id: 3,
+                        title: '책',
+                        author: '쟤'
+                    }
+
+                ]
+            }
+        }
+    })
+
+    app.component('hello-div', {
+        props: ['title'],
+        template: '<div>안녕하세요, {{title}} !</div>'
+    })
+
+    app.component('board-div', {
+        props: {
+            title: String,
+            author: String
+        },
+        template: '<h4>{{title}}</h4>' +
+            '<p>작성자 : {{author}}</p>'
+    })
+
+    app.component('default-div', {
+        props: {
+            count: {
+                type: Number,
+                default: 123,
+                validator(value){
+                    return value > 100
+                }
+            }
+        },
+        template: '<p>{{count}}</p>'
+    })
+
+    app.mount('#app')
+</script>
+</body>
+</html>

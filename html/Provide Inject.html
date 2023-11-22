@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <parent-div sub-title="부제목" />
+</div>
+<script type="module">
+    const app = Vue.createApp ( {
+    })
+
+    app.component('parent-div', {
+        data() {
+            return {
+                title: '제목'
+            }
+        },
+        props: {
+            subTitle: String
+        },
+        provide() {
+            return {
+                title: Vue.computed(() => this.title),
+                subTitle: this.subTitle
+            }
+        },
+        template: `
+            <div id="parent">
+                <input v-model="title">
+                <foo-div />
+            </div>
+        `
+    }).component('foo-div', {
+        inject: ['title', 'subTitle'],
+        template: `
+            <div>
+                foo: {{title.value + ':' + subTitle}}
+                <child-div />
+            </div>
+        `
+    }).component('child-div', {
+        inject: ['title', 'subTitle'],
+        template: `
+            <div>
+                child: {{title.value + ':' + subTitle}}
+            </div>
+        `
+    })
+
+    app.mount('#app')
+</script>
+</body>
+</html>
