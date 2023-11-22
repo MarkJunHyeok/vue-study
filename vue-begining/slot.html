@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <hello-div>준준</hello-div>
+    <hello-div></hello-div>
+    <br>
+
+    <my-button></my-button>
+    <my-button type="submit">전송</my-button>
+    <br>
+
+    <default-layout></default-layout>
+    <default-layout>
+        <template v-slot:header>
+            <h3> Vue.js 샘플</h3>
+        </template>
+        <p> 안녕하세요. 아디피스싱 과정을 따라가기가 매우 어렵습니다. </p>
+        <p> 실제로 아무것도 피할 수 없지만 따라서 우리는 그들을 비난하지 않습니다. </p>
+        <template v-slot:footer>
+            <small>저작권 @xxxx 판권 소유</small>
+        </template>
+    </default-layout>
+</div>
+<script type="module">
+    const app = Vue.createApp ( {})
+
+    app.component('hello-div', {
+        template: '<div>안녕하세요, <slot>준혁</slot> !</div>'
+    })
+
+    app.component('my-button', {
+        template: `<button type="button">
+                        <slot>
+                            클릭
+                        </slot>
+                   </button>`
+    })
+
+    app.component('default-layout', {
+        template: `<div class="container">
+                        <heder>
+                            <slot name="header">기본 헤더</slot>
+                        </heder>
+                        <main>
+                            <slot>기본 메인</slot>
+                        </main>
+                        <footer>
+                            <slot name="footer">기본 바닥글</slot>
+                        </footer>
+                   </div>`
+    })
+
+
+    app.mount('#app')
+</script>
+</body>
+</html>
