@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id = "app" >
+    <div id = "app" >
+        <custom-input v-model="myText" ></custom-input>
+        <br>
+        <p> {{myText}} </p>
+    </div>
+</div>
+
+<script type="module">
+    const { ref, computed } = Vue
+
+    const app = Vue.createApp ( {
+        setup() {
+            const myText = Vue.ref('sfdsfsd')
+            return {myText}
+        }
+    })
+
+    app.component('custom-input', {
+        props : ['modelValue'],
+        emits : ['update:modelValue'],
+        template : `<input v-model="myValue">` ,
+        setup(props, context) {
+            const myValue = computed({
+                get() {
+                    return props.modelValue
+                },
+                set(value) {
+                    if( props.modelValue !== value) {
+                        context.emit('update:modelValue', value)
+                    }
+                }
+            });
+
+            return {
+                myValue
+            }
+        }
+    })
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>

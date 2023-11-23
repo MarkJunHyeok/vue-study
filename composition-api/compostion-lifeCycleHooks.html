@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <button v-on:click="onclick"> Click</button>
+    <p> {{ count }} </p>
+</div>
+
+<script type="module">
+    const app = Vue.createApp({
+        setup() {
+            console.log('setup');
+
+            Vue.onBeforeMount(() => {
+                console.log('onBeforeMount hook');
+            });
+            Vue.onMounted(() => {
+                console.log('onMounted hook');
+            });
+            Vue.onBeforeUpdate(() => {
+                console.log('onBeforeUpdate hook');
+            });
+            Vue.onUpdated(() => {
+                console.log('onUpdated hook: count = ' + count.value);
+            });
+            Vue.onBeforeUnmount(() => {
+                console.log('onBeforeUnmount hook');
+            });
+            Vue.onUnmounted(() => {
+                console.log('onUnmounted hook');
+            });
+
+            const count = Vue.ref(0);
+            const onclick = () => {
+                count.value++;
+            };
+            return {
+                count,
+                onclick
+            }
+        }
+    });
+    app.mount('#app');
+
+    setTimeout(() => {
+        // 5초 후 마운트 해제
+        app.unmount();
+    }, 5000);
+
+</script>
+</body>
+</html>

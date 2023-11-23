@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id = "app" >
+    <input v-focus />
+    <p v-text-color:background="color" >배경색상</p>
+    <p v-text-color:border="color" >보더색상</p>
+    <p v-text-color:text="color" >색상</p>
+</div>
+
+<script type="module">
+    const {ref} = Vue
+
+    const app = Vue . createApp ({
+        setup() {
+            const color = ref('red')
+
+            return {color}
+        }
+    });
+    // v-focus라는 글로벌 사용자 지정 지시문 등록
+    app . directive ( 'focus' , {
+        // 바인딩 된 요소가 DOM에 마운트 될 때
+        mounted ( el ) {
+            // 그 요소에 초점을 맞추기
+            el . focus ();
+        }
+    });
+
+    app.directive('text-color', {
+        mounted(el, binding) {
+            switch (binding.arg) {
+                case 'background' :
+                    el.style.backgroundColor = binding.value
+                    break;
+                case 'border' :
+                    el.style.borderStyle = 'solid'
+                    el.style.borderWidth = '1px'
+                    el.style.borderColor = binding.value
+                    break;
+                case 'text' :
+                    el.style.color = binding.value
+                    break;
+                default:
+                    el.style.color = binding.value
+            }
+        }
+    })
+
+    app . mount ( '#app' );
+
+</script>
+</body>
+</html>

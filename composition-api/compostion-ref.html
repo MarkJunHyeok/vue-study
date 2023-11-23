@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <!-- 각각에 ref 속성을 지정 -->
+    <p ref="hello"> hello </p>
+    <bar-div ref="bar" class="child"></bar-div>
+</div>
+
+<script type="module">
+    const {ref, computed} = Vue
+
+    const app = Vue.createApp({
+        setup() {
+            // 요소 참조를 보유하는 ref 선언 (이름은 템플릿의 ref 속성 값과 일치)
+            const hello = Vue.ref(); //hello 는 ref 객체
+            const bar = Vue.ref(); // bar 는 ref 객체
+            //onMounted 라이프사이클 훅으로 참조 정보를 출력
+            Vue.onMounted(() => {
+                //ref 객체의 value 속성에 액세스
+                console.log(hello.value); //<p>hello</p>
+                console.log(hello.value.innerHTML); //hello
+                console.log(bar.value); //Proxy {…} 자식 구성 요소의 인스턴스
+                console.log(bar.value.message); //This is Bar.
+                console.log(bar.value.onclick); //() => { alert('Bar'); } 메서드
+                console.log(bar.value.$attrs); //Proxy {class: 'child', __vInternal: 1}
+                console.log(bar.value.$attrs.class); //child
+            });
+            // ref를 템플릿에 게시
+            return {
+                hello,
+                bar,
+            };
+        },
+    });
+
+    app . component ( 'bar-div' , {
+        template : `<div class="bar" v-on:click="onclick">{{ message }}</div>` ,
+        setup () {
+            // 데이터
+            const message = 'This is Bar.' ;
+            // 메소드
+            const onclick = () => {
+                alert ( 'Bar' );
+            }
+            // 위의 데이터와 메소드 공개
+            return {
+                message ,
+                onclick
+            }
+        }
+    });
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>

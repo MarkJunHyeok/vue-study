@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <input type="range" min="0" max="500" v-model="pinPadding">
+    <select v-model="direction">
+        <option value="top">top</option>
+        <option value="right">right</option>
+        <option value="bottom">bottom</option>
+        <option value="left">left</option>
+    </select>
+    <p v-pin:[direction]="pinPadding">
+        {{ pinPadding }}px from the {{ direction || 'top' }}
+    </p>
+</div>
+
+<script type="module">
+    const app = Vue.createApp({
+        data() {
+            return {
+                direction: 'right',
+                pinPadding: 200
+            }
+        }
+    }).directive('pin', (el, binding) => {
+        el.style.position = 'fixed'
+        el.style.top = null;
+        el.style.right = null;
+        el.style.bottom = null;
+        el.style.left = null;
+        const s = binding.arg;
+        el.style[s] = binding.value + 'px';
+    });
+    app.mount('#app');
+
+</script>
+</body>
+</html>

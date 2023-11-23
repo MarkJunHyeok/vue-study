@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <!-- 자식 구성 요소의 ref 속성에 childRef 부여 -->
+    <child-div ref="childRef" message="Foo!"></child-div>
+    <button type="button" v-on:click="handleClick"> childFunc 호출</button>
+</div>
+
+<script type="module">
+    const {ref, computed} = Vue
+
+    // 부모 구성 요소
+    const app = Vue.createApp({
+        setup() {
+            //ref 속성에 지정된 값과 이름이 같은 변수를 선언하고 ref 메서드로 초기화
+            const childRef = Vue.ref(null); // 또는 Vue.ref()
+            // 자식 구성 요소의 메서드를 발화시키는 메서드 정의
+            const handleClick = () => {
+                // 자식 컴포넌트에 노출된 메서드 호출
+                childRef.value.childFunc();
+                // 다음의 메소드는 공개되어 있지 않기 때문에 사용하면 에러가 된다
+                //childRef.value.childOnlyFunc();
+            };
+            // 템플릿에 게시
+            return {
+                childRef,
+                handleClick,
+            };
+        },
+    });
+
+    // 하위 구성 요소
+    app.component('child-div', {
+        // props 옵션
+        props: {
+            message: {
+                type: String,
+                default: 'World!'
+            }
+        },
+
+        template: `
+          <div>Hello {{ message }}</div>`,
+
+        setup(props, context) {
+            // 게시할 메서드 정의
+            const childFunc = () => {
+                console.log("childFunc: props 의 값은 " + props.message);
+            };
+            // 비공개 메서드 정의
+            const childOnlyFunc = () => {
+                console.log("비공개 메서드");
+            };
+
+            // context.expose에서 childFunc 메서드를 외부 구성 요소에 노출
+            context.expose({
+                childFunc
+            });
+
+            return {
+                childFunc,
+                childOnlyFunc
+            }
+        }
+    });
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>

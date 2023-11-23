@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id = "app" >
+    <div id = "app" >
+        <counter-div :initial-count="initialCount"></counter-div>
+        <button type = "button" v-on:click = "init" > 난수로 초기화 </button>
+    </div>
+</div>
+
+<script type="module">
+    const { ref, computed } = Vue
+
+    const app = Vue.createApp ( {
+        setup() {
+            const initialCount = ref(0)
+
+            const init = () => {
+                initialCount.value = Math.floor(Math.random() * 10)
+            }
+
+            return {
+                initialCount,
+                init
+            }
+        }
+    })
+
+    app.component('counter-div', {
+        props : {
+            initialCount: {
+                type: Number,
+                default: 1
+            }
+        },
+        template : `
+          <div>Count: {{ count }}
+              <div>
+                <button type="button" v-on:click="countUp">Increase</button>
+              </div>
+          </div>` ,
+        setup(props, context) {
+            const count = Vue.ref(props.initialCount)
+
+            Vue.watch(
+                () => count.value = props.initialCount,
+                (newValue, oldValue) => {
+                    count.value = newValue
+                }
+            )
+
+            const countUp = () => count.value++
+
+            return {
+                count,
+                countUp
+            }
+        }
+    })
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>

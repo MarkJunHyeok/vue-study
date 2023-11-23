@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <parent-div/>
+</div>
+</body>
+
+<script type="module">
+    const {ref, computed} = Vue
+
+    // 부모 구성 요소
+    const app = Vue.createApp({
+        template: `
+          <div id="parent">
+            <input v-model="obj.title">
+            <foo-div/>
+          </div>`,
+        setup() {
+            const obj = Vue.reactive({title: 'Vue3'});
+            Vue.provide('obj', obj)
+            return { obj }
+        }
+    });
+
+    // 하위 구성 요소
+    app.component('foo-div', {
+        template: `
+            <div id="foo">
+              foo: {{obj.title}}
+              <child-div/>
+            </div>`,
+        setup() {
+            return { obj: Vue.inject('obj') }
+        }
+    }).component('child-div', {
+        template: `
+          <div id="child">
+            child: {{ obj.title }}
+          </div>`,
+        setup() {
+            //inject 메소드로 등록된 값을 취득
+            return { obj: Vue.inject('obj') };
+        }
+    });
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>

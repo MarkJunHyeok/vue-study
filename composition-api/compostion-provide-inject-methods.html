@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.js"></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <parent-div/>
+</div>
+</body>
+
+<script type="module">
+    const {ref, provide, inject, readonly} = Vue
+
+    // 부모 구성 요소
+    const app = Vue.createApp({
+        template: `
+          <div id="parent">
+            <input v-model="title">
+            <foo-div/>
+          </div>`,
+        setup() {
+            const title = ref('Vue3');
+
+            const updateTitle = () => title.value = 'New Title'
+
+            provide('title', readonly(title))
+            provide('updateTitle', updateTitle)
+
+            return { title }
+        }
+    });
+
+    // 하위 구성 요소
+    app.component('foo-div', {
+        template: `
+          <div id="foo">
+            <child-div/>
+          </div>`
+    }).component('child-div', {
+        template: `
+          <div id="child">
+            <p>child: {{ title }}</p>
+            <button v-on:click="updateTitle">타이틀 업데이트</button>
+            <button v-on:click="title = 'child에서 변경'">타이틀 변경</button>
+          </div>` ,
+        setup() {
+            //inject 메소드로 등록된 값을 취득
+            const title = inject('title');
+            const updateTitle = inject('updateTitle');
+
+            return { title, updateTitle }
+        }
+    });
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>
