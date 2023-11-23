@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id = "app" >
+    <counter-div></counter-div>
+</div>
+
+<script type="module">
+    const { ref } = Vue
+
+    const app = Vue.createApp ( {})
+
+    app.component('counter-div', {
+        props: {
+            initialCount: {
+                type: Number,
+                default: 1
+            }
+        },
+        template : `<div>Count: {{ count }}
+                <div>
+                  <button type="button" v-on:click="countUp">Increase</button>
+                  <button type="button" v-on:click="countDown">Decrease</button>
+                </div>
+              </div>
+              ` ,
+        setup(props, context) {
+            const state = Vue.reactive({
+                count: props.initialCount
+            });
+
+            let count = Vue.toRef(state, 'count');
+
+            const countUp = () => count.value++;
+            const countDown = () => count.value--;
+
+            return {
+                count, countUp, countDown
+            }
+        }
+    })
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>

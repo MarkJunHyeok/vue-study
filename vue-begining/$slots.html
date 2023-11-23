@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:v-model="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id = "app" >
+    <base-layout>
+        <template v-slot:header >
+            <h3> Vue.js Sample </h3>
+        </template>
+        <template v-slot:default >
+            <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. </p>
+            <p> Nihil quidem fugit aut sed neque itaque accusamus ids. </p>
+        </template>
+        <template v-slot:footer >
+            <small> Copyright © xxxx. All rights reserved. </small>
+        </template>
+    </base-layout>
+</div>
+<script type="module">
+    const app = Vue.createApp ( {})
+
+    const {createApp, h} = Vue
+
+    app . component ( 'base-layout' , {
+        render () {
+            return h ( 'div' , { class : 'container' }, [
+                h ( 'header' , this . $slots . header ()),
+                h ( 'main' , this . $slots . default ()),
+                h ( 'footer' , this . $slots . footer ())
+            ])
+        }
+    });
+
+
+    app.mount('#app')
+</script>
+</body>
+</html>

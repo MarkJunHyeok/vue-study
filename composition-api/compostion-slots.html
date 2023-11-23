@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id = "app" >
+    <base-layout>
+        <template v-slot:header >
+            <h1> Vue.js Sample </h1>
+        </template>
+
+        <template v-slot:default >
+            <p> Lorem, ipsum dolor sit amet consectetur adipisicing elit. </p>
+            <p> Nihil quidem fugit aut sed neque itaque accusamus ids. </p>
+        </template>
+
+        <template v-slot:footer >
+            <p> Copyright © xxxx. All rights reserved. </p>
+        </template>
+    </base-layout>
+</div>
+
+<script type="module">
+    const { createApp , h } = Vue
+
+    const app = Vue.createApp ( {})
+
+    app.component('base-layout', {
+        setup(props, {slots}) {
+            const headerContent = h( 'h1' , 'Default Header Content' )
+            const mainContent = h( 'p' , 'Default Main Content' )
+            const footerContent = h( 'p' , 'Default Footer Content')
+
+            return () => h('div', {class: 'container'}, [
+                h('header', slots.header().length ? slots.header() : headerContent),
+                h('main', slots.default().length ? slots.default() : mainContent),
+                h('footer', slots.footer().length ? slots.footer() : footerContent)
+            ])
+        }
+    })
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>

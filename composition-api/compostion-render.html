@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <count-button ref="childRef" v-on:click = "handleClick" ></count-button>
+    <button type="button" v-on:click="handleClick"> 클릭 </button>
+</div>
+
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+
+
+    const app = Vue.createApp ( {
+        setup () {
+            // 하위 컴포넌트 측의 컴포넌트 정보를 수신하는 ref를 선언
+            const childRef = Vue . ref ( null ); // 또는 Vue.ref()
+            // 아이 컴퍼넌트측의 메소드를 발화시키는 메소드
+            const handleClick = () => {
+                // 게시된 메서드 호출
+                childRef.value.increment ();
+            };
+            // 템플릿에 게시
+            return {
+                childRef ,
+                handleClick ,
+            };
+        }
+    })
+
+    app.component('count-button', {
+        setup(props, {expose}) {
+            const count = Vue.ref(0);
+
+            const increment = () => ++count.value
+
+            expose({increment})
+
+            const myRender =  function () {
+                return Vue.h(
+                    'button',
+                    {
+                        type: "button",
+                        onClick: increment
+                    },
+                    'Count: ' + count.value
+                );
+            }
+            return myRender
+        }
+    })
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>

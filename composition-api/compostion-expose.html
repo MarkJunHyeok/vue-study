@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src = "https://unpkg.com/vue@3.2.36/dist/vue.global.js" ></script>
+    <title>Vue Sample</title>
+</head>
+<body>
+<div id="app">
+    <my-counter ref = "counter" ></my-counter>
+    <div> <!-- 부모 버튼 -->
+        <button @click = "increaseCount" > Increment from parent </button>
+        <button @click = "decreaseCount" > Decrement from parent </button>
+        <button @click = "resetCount" > Reset from parent </button>
+    </div>
+</div>
+
+<!-- script タグの type 属性に module を指定 -->
+<script type="module">
+    //保存した es モジュールビルドのファイル（vue.js）から createapp をインポート（分割代入）
+    const app = Vue.createApp ( {
+        setup(){
+            let counter = Vue.ref(null);
+            const increaseCount = () => counter.value.increment()
+            const decreaseCount = () => counter.value.decrement()
+            const resetCount = () => counter.value.reset()
+
+            return {
+                counter,
+                increaseCount,
+                decreaseCount,
+                resetCount
+            }
+        }
+    })
+
+    app.component('my-counter', {
+        template : `
+          <p>Counter: {{ count }}</p>
+          <button @click="increment">Increment</button>
+          <button @click="decrement">Decrement</button>
+          <button @click="reset">Reset</button>
+          ` ,
+        setup(props, {expose}) {
+            const count = Vue.ref(0);
+
+            const increment = () => count.value++
+            const decrement = () => count.value--
+            const reset = () => count.value = 0
+
+            expose({reset, increment})
+
+            return{
+                count,
+                increment,
+                decrement,
+                reset
+            }
+        }
+    })
+
+    app.mount('#app')
+
+</script>
+</body>
+</html>
