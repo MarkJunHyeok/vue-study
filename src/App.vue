@@ -1,47 +1,37 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref } from 'vue';
+import MyCounter from './components/MyCounter.vue';
+import CounterButton from './components/CounterButton.vue';
+import CounterButtonPropsEmits from './components/CounterButtonPropsEmits.vue';
+import useCounter from "./composables/useCounter";
+
+const childRef = ref(null);
+const handleClick = () => childRef.value.increment()
+
+
+const {count, countUp, countDown} = useCounter(0);
+
+const vTextColor = {
+  mounted(el, binding) {
+    el.style.color = binding.value
+  }
+}
+const countUpColor = 'red'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <MyCounter :initial-count="100" />
+  <CounterButton ref="childRef" @click="handleClick" />
+  <br>
+  <CounterButtonPropsEmits @clickcount="countUp" label="Count Up"  v-text-color="countUpColor"></CounterButtonPropsEmits>
+  <CounterButtonPropsEmits @clickcount="countDown" label="Count Down"></CounterButtonPropsEmits>
+  <p>Count : {{ count }}</p>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+#app {
+  text-align: center;
+  color: green;
+  margin-top: 50px;
 }
 </style>
